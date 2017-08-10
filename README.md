@@ -10,6 +10,7 @@ pod install
 
 
 打开使用 
+
 `
 [[SocketRocketUtility instance] SRWebSocketOpen];
 `
@@ -19,11 +20,15 @@ pod install
 `
 [[SocketRocketUtility instance] SRWebSocketClose]; 
 `
+
 打开成功会收到通知需要在前面先监听
+
 `
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SRWebSocketDidOpen) name:@"kWebSocketDidOpenNote" object:nil];
 `
+
 收到服务器发送的消息会收到通知需要在前面先监听
+
 `
 [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SRWebSocketDidReceiveMsg:) 
 `
