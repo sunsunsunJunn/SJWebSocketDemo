@@ -9,10 +9,15 @@
 #import <Foundation/Foundation.h>
 #import <SocketRocket.h>
 
+extern NSString * const kNeedPayOrderNote;
+extern NSString * const kWebSocketDidOpenNote;
+extern NSString * const kWebSocketDidCloseNote;
+extern NSString * const kWebSocketdidReceiveMessageNote;
+
 @interface SocketRocketUtility : NSObject
 
-/** 连接状态 */
-@property (nonatomic,assign) SRReadyState socketReadyState;
+// 获取连接状态
+@property (nonatomic,assign,readonly) SRReadyState socketReadyState;
 
 + (SocketRocketUtility *)instance;
 

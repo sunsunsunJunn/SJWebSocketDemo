@@ -516,7 +516,7 @@
 				DEVELOPMENT_TEAM = 87A4WPHHG4;
 				INFOPLIST_FILE = WebSocketDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.honestRice.WebSocketDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestRice.WebSocketDemo11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -529,7 +529,7 @@
 				DEVELOPMENT_TEAM = 87A4WPHHG4;
 				INFOPLIST_FILE = WebSocketDemo/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.honestRice.WebSocketDemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.honestRice.WebSocketDemo11;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
