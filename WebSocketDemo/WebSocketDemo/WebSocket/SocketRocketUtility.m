@@ -43,14 +43,19 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 }
 
 #pragma mark - **************** public methods
--(void)SRWebSocketOpen{
+-(void)SRWebSocketOpenWithURLString:(NSString *)urlString {
     
     //如果是同一个url return
     if (self.socket) {
         return;
     }
+    
+    if (!urlString) {
+        return;
+    }
+    
     self.socket = [[SRWebSocket alloc] initWithURLRequest:
-                   [NSURLRequest requestWithURL:[NSURL URLWithString:@"youurl"]]];//这里填写你服务器的地址
+                   [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
     
     NSLog(@"请求的websocket地址：%@",self.socket.url.absoluteString);
 

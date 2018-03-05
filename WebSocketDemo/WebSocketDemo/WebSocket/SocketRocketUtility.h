@@ -21,7 +21,7 @@ extern NSString * const kWebSocketdidReceiveMessageNote;
 
 + (SocketRocketUtility *)instance;
 
--(void)SRWebSocketOpen;//开启连接
+-(void)SRWebSocketOpenWithURLString:(NSString *)urlString;//开启连接
 -(void)SRWebSocketClose;//关闭连接
 - (void)sendData:(id)data;//发送数据
 
