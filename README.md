@@ -12,7 +12,7 @@ pod install
 打开使用 
 
 `
-[[SocketRocketUtility instance] SRWebSocketOpen];
+[[SocketRocketUtility instance] SRWebSocketOpenWithUrlStrig:@"写入自己后台的地址"];
 `
 
 关闭使用
@@ -24,13 +24,13 @@ pod install
 打开成功会收到通知需要在前面先监听
 
 `
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SRWebSocketDidOpen) name:@"kWebSocketDidOpenNote" object:nil];
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SRWebSocketDidOpen) name:kWebSocketDidOpenNote object:nil];
 `
 
 收到服务器发送的消息会收到通知需要在前面先监听
 
 `
-[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SRWebSocketDidReceiveMsg:) 
+[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(SRWebSocketDidReceiveMsg:) name:kWebSocketDidCloseNote object:nil];
 `
 
 好用的话不要吝啬你的star哦 ：）
