@@ -29,6 +29,8 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 
 @property (nonatomic,strong) SRWebSocket *socket;
 
+@property (nonatomic,copy) NSString *urlString;
+
 @end
 
 @implementation SocketRocketUtility
@@ -53,6 +55,8 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
     if (!urlString) {
         return;
     }
+    
+    self.urlString = urlString;
     
     self.socket = [[SRWebSocket alloc] initWithURLRequest:
                    [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]]];
@@ -122,7 +126,7 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
     
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(reConnectTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         self.socket = nil;
-        [self SRWebSocketOpen];
+        [self SRWebSocketOpenWithURLString:self.urlString];
         NSLog(@"重连");
     });
     
