@@ -16,7 +16,7 @@ dispatch_async(dispatch_get_main_queue(), block);\
 }
 
 NSString * const kNeedPayOrderNote               = @"kNeedPayOrderNote";
-NSString * const kWebSocketDidOpenNote           = @"kWebSocketdidReceiveMessageNote";
+NSString * const kWebSocketDidOpenNote           = @"kWebSocketDidOpenNote";
 NSString * const kWebSocketDidCloseNote          = @"kWebSocketDidCloseNote";
 NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessageNote";
 
@@ -35,7 +35,7 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 
 @implementation SocketRocketUtility
 
-+(SocketRocketUtility *)instance{
++ (SocketRocketUtility *)instance {
     static SocketRocketUtility *Instance = nil;
     static dispatch_once_t predicate;
     dispatch_once(&predicate, ^{
@@ -63,12 +63,14 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
     
     NSLog(@"请求的websocket地址：%@",self.socket.url.absoluteString);
 
-    self.socket.delegate = self;   //SRWebSocketDelegate 协议
+    //SRWebSocketDelegate 协议
+    self.socket.delegate = self;   
     
-    [self.socket open];     //开始连接
+    //开始连接
+    [self.socket open];
 }
 
--(void)SRWebSocketClose{
+- (void)SRWebSocketClose {
     if (self.socket){
         [self.socket close];
         self.socket = nil;
@@ -114,8 +116,7 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 
 #pragma mark - **************** private mothodes
 //重连机制
-- (void)reConnect
-{
+- (void)reConnect {
     [self SRWebSocketClose];
 
     //超过一分钟就不再重连 所以只会重连5次 2^5 = 64
@@ -133,15 +134,14 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
     //重连时间2的指数级增长
     if (reConnectTime == 0) {
         reConnectTime = 2;
-    }else{
+    } else {
         reConnectTime *= 2;
     }
 }
 
 
 //取消心跳
-- (void)destoryHeartBeat
-{
+- (void)destoryHeartBeat {
     dispatch_main_async_safe(^{
         if (heartBeat) {
             if ([heartBeat respondsToSelector:@selector(isValid)]){
@@ -155,8 +155,7 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 }
 
 //初始化心跳
-- (void)initHeartBeat
-{
+- (void)initHeartBeat {
     dispatch_main_async_safe(^{
         [self destoryHeartBeat];
         //心跳设置为3分钟，NAT超时一般为5分钟
@@ -166,19 +165,19 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
     })
 }
 
--(void)sentheart{
+- (void)sentheart {
     //发送心跳 和后台可以约定发送什么内容  一般可以调用ping  我这里根据后台的要求 发送了data给他
     [self sendData:@"heart"];
 }
 
 //pingPong
-- (void)ping{
+- (void)ping {
     if (self.socket.readyState == SR_OPEN) {
         [self.socket sendPing:nil];
     }
 }
 
-#pragma mark - socket delegate
+#pragma mark - **************** SRWebSocketDelegate
 - (void)webSocketDidOpen:(SRWebSocket *)webSocket {
     //每次正常连接的时候清零重连时间
     reConnectTime = 0;
@@ -191,7 +190,6 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didFailWithError:(NSError *)error {
-    
     if (webSocket == self.socket) {
         NSLog(@"************************** socket 连接失败************************** ");
         _socket = nil;
@@ -201,7 +199,6 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 }
 
 - (void)webSocket:(SRWebSocket *)webSocket didCloseWithCode:(NSInteger)code reason:(NSString *)reason wasClean:(BOOL)wasClean {
-    
     if (webSocket == self.socket) {
         NSLog(@"************************** socket连接断开************************** ");
         NSLog(@"被关闭连接，code:%ld,reason:%@,wasClean:%d",(long)code,reason,wasClean);
@@ -210,12 +207,13 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
     }
 }
 
-/*该函数是接收服务器发送的pong消息，其中最后一个是接受pong消息的，
+/*
+ 该函数是接收服务器发送的pong消息，其中最后一个是接受pong消息的，
  在这里就要提一下心跳包，一般情况下建立长连接都会建立一个心跳包，
  用于每隔一段时间通知一次服务端，客户端还是在线，这个心跳包其实就是一个ping消息，
  我的理解就是建立一个定时器，每隔十秒或者十五秒向服务端发送一个ping消息，这个消息可是是空的
  */
--(void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload{
+- (void)webSocket:(SRWebSocket *)webSocket didReceivePong:(NSData *)pongPayload {
     NSString *reply = [[NSString alloc] initWithData:pongPayload encoding:NSUTF8StringEncoding];
     NSLog(@"reply===%@",reply);
 }
@@ -232,11 +230,11 @@ NSString * const kWebSocketdidReceiveMessageNote = @"kWebSocketdidReceiveMessage
 }
 
 #pragma mark - **************** setter getter
-- (SRReadyState)socketReadyState{
+- (SRReadyState)socketReadyState {
     return self.socket.readyState;
 }
 
--(void)dealloc{
+- (void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

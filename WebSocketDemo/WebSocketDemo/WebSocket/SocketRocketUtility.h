@@ -16,13 +16,18 @@ extern NSString * const kWebSocketdidReceiveMessageNote;
 
 @interface SocketRocketUtility : NSObject
 
-// 获取连接状态
+/** 获取连接状态 */
 @property (nonatomic,assign,readonly) SRReadyState socketReadyState;
 
-+ (SocketRocketUtility *)instance;
+/** 开始连接 */
+- (void)SRWebSocketOpenWithURLString:(NSString *)urlString;
 
--(void)SRWebSocketOpenWithURLString:(NSString *)urlString;//开启连接
--(void)SRWebSocketClose;//关闭连接
-- (void)sendData:(id)data;//发送数据
+/** 关闭连接 */
+- (void)SRWebSocketClose;
+
+/** 发送数据 */
+- (void)sendData:(id)data;
+
++ (SocketRocketUtility *)instance;
 
 @end
